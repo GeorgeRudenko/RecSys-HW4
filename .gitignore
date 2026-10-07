@@ -1,0 +1,4 @@
+# outputs written by the verification scripts
+verification/*.png
+verification/*.json
+node_modules/
