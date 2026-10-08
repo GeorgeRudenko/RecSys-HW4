@@ -714,7 +714,9 @@ function enrichRule(rule, index) {
  * Swap the antecedent and consequent of a rule and recompute the metrics.
  *
  * Confidence is not symmetric, so `B -> A` usually has a different confidence
- * and support value from `A -> B` even though lift is unchanged.
+ * from `A -> B`. Support and lift are unchanged: both directions share
+ * count(A union B) and N, and lift = count(A union B) * N / (count(A) * count(B)).
+ * (HW4 fix: the starter comment said support also changes with direction.)
  *
  * @param {Rule} rule
  * @param {BasketIndex} index

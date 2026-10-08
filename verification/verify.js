@@ -67,6 +67,9 @@ const byKey = new Map(rules.map(r => [r.antecedent.join('+') + '>' + r.consequen
 let both = 0, liftSym = 0, confDiff = 0;
 for (const r of pairRules) { const rev = byKey.get(r.consequent.join('+') + '>' + r.antecedent.join('+')); if (rev) { both++; if (Math.abs(rev.lift - r.lift) < 1e-12) liftSym++; if (Math.abs(rev.confidence - r.confidence) > 1e-9) confDiff++; } }
 ok(both > 0 && liftSym === both, `  ${both} pair rules present in both directions: lift identical in all, confidence differs in ${confDiff}`);
+// Provided reverseRule (its starter comment claimed support changes with direction):
+{ let bad = 0; for (const r of rules) { const rev = g('reverseRule')(r, idx); if (Math.abs(rev.support - r.support) > 1e-15 || Math.abs(rev.lift - r.lift) > 1e-9 || rev.jointCount !== r.jointCount) bad++; }
+  ok(bad === 0, `reverseRule on all ${rules.length} rules: support, lift and count(A∪B) unchanged`); }
 // Threshold boundary: an itemset with support exactly at the threshold must be kept.
 const exact = g('findFrequentItemsets')([['a', 'b'], ['a', 'b'], ['a'], ['c', 'd'], ['c']], 0.4);
 ok(exact.some(x => x.items.join() === 'a,b' && x.count === 2), 'boundary: support exactly 0.4 (2 of 5) is kept');
